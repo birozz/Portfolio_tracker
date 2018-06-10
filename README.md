@@ -52,4 +52,4 @@ services:
   [axios]: https://github.com/mzabriskie/axios "axios"
   [coinmarketcap]: https://coinmarketcap.com/api/ "coinmarketcap API"
   [cryptocompare]: https://www.cryptocompare.com/api "cryptocompare API"
-  [website image]: /static/images/screenshot.png "Screenshot"
+  [website image]: /static/images/no_image.png "Screenshot"

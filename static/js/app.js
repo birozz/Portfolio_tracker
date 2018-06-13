@@ -57,7 +57,6 @@ let app = new Vue({
     },
     methods: {
 
-
         portfolio_export: function () {
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.portfolio));
             var downloadAnchorNode = document.createElement('a');
@@ -81,6 +80,7 @@ let app = new Vue({
             hideEvent.target.closest('tr').setAttribute('hidden', 'true')
             this.portfolio[coinIndex].hidden = true
         },
+
         delCoin: function (delEvent) {
             coinIndex = delEvent.target.closest('tr').rowIndex - 1
             this.portfolio.splice(coinIndex, 1)

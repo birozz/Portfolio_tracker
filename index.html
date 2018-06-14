@@ -129,31 +129,42 @@
 
 
 
-                <b-tab title="disabled" :disabled="second_tab">
+                <b-tab title="my coin value" :disabled="second_tab">
 
                     <table class="table table-hover">
+                      
                         <thead>
-                            <td>Action</td>
-                            <td>Rank</td>
                             <td>Name</td>
-                            <td>Symbol</td>
-                            <td>Price (USD)</td>
+                            <td>Amount</td>
+                            <td>sat</td>
+                            <td>$</td>
+                            <td>PLN</td>
                             <td>1H</td>
                             <td>1D</td>
                             <td>1W</td>
                             <td>Market Cap (USD)</td>
                         </thead>
+                        
+                        <thead id="summa">
+                            <td></td>
+                            <td></td>
+                            <td>{{100}} sat</td>
+                            <td>{{400}} $</td>
+                            <td>{{700}} PLN</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </thead>
+                        
+                        
                         <tbody>
                             <tr v-cloak v-for="coin in portfolio">
-                                <td>
-                                    <b-form-textarea  placeholder="Enter something" :rows="1" :max-rows="1">
-                                    </b-form-textarea>
-                                </td>
-                                <td><b-form-textarea  placeholder="Enter " :rows="1" :max-rows="1">
-                                    </b-form-textarea></td>
                                 <td><img v-bind:src="getCoinImage(coin.symbol)"> {{ coin.data.name }}</td>
-                                <td>{{ coin.symbol }}</td>
-                                <td>{{ coin.data.quotes.USD.price | currency }}</td>
+                                <td><b-form-input v-model="tt" type="text" placeholder="something1"></b-form-input></td>
+                                <td>{{ 0.0000222 }}</td>
+                                <td>{{ 222 | currency }}</td>
+                                <td>{{ 222 * 3.8 }}</td>
                                 <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_1h)"> <span v-if="coin.data.quotes.USD.percent_change_1h > 0">+</span>{{ coin.data.quotes.USD.percent_change_1h }}% </td>
                                 <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_24h)"> <span v-if="coin.data.quotes.USD.percent_change_24h > 0">+</span>{{ coin.data.quotes.USD.percent_change_24h }}% </td>
                                 <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_7d)"> <span v-if="coin.data.quotes.USD.percent_change_7d > 0">+</span>{{ coin.data.quotes.USD.percent_change_7d }}% </td>
@@ -161,7 +172,11 @@
                             </tr>
                         </tbody>
                     </table>
+<!--
+<b-form-textarea placeholder="Enter something" :rows="1" :max-rows="1">
+                                    </b-form-textarea>
 
+-->
 
 
                 </b-tab>

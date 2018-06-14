@@ -12,6 +12,12 @@ td img {
 
 .table > thead tr, .table > thead td, .table > thead th {border: 0!important;}
 
+#summa {
+font-weight: 700;
+   background:red; 
+}
+
+
 .jumbotron p {
   font-size: 1.2em;
 }

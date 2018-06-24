@@ -25,6 +25,7 @@ function addCoinToPortfolio(id, symbol) {
     tmp.push(id)
     tmp.push(symbol)
 
+    //why it is first pushed to tmp and later shifted ?
     let coinObj = {
         id: tmp.shift(),
         symbol: tmp.shift(),
@@ -34,7 +35,7 @@ function addCoinToPortfolio(id, symbol) {
                 USD: {}
             }
         },
-        ammount: 0,
+        amount: 0,
         invested: 0,
         purchese_price_S: 0,
         purchese_price_B: 0
@@ -46,6 +47,8 @@ function addCoinToPortfolio(id, symbol) {
 let app = new Vue({
     el: "#app",
     data: {
+        sum_sat: 0,
+        sum_dolar: 0,
         name: '',
         second_tab: true,
         portfolio: [],
@@ -55,7 +58,19 @@ let app = new Vue({
         totalrows: 1,
         perpage: 50
     },
+
     methods: {
+
+        setAmount: function () {
+            this.sum_dolar=0
+            this.sum_sat=0
+            this.portfolio.forEach((coin, index, theArray) => {
+                if (!theArray[index].hidden) {
+                    this.sum_dolar += theArray[index].data.quotes.USD.price * theArray[index].amount
+                    this.sum_sat += coin.data.quotes.BTC.price * theArray[index].amount
+                }
+            })
+        },
 
         portfolio_export: function () {
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.portfolio));
@@ -89,7 +104,6 @@ let app = new Vue({
             if (this.portfolio.length == 0) {
                 this.second_tab = true
             }
-
         },
         /**
          * Update the coins on tab input (change) 
@@ -119,7 +133,7 @@ let app = new Vue({
             let self = this
             //this.totalrows = this.portfolio.length
             this.portfolio.forEach((coin, index, theArray) => {
-                axios.get(COINMARKETCAP_API_URI + "/v2/ticker/" + coin.id + "/?convert=").then(function (response) {
+                axios.get(COINMARKETCAP_API_URI + "/v2/ticker/" + coin.id + "/?convert=BTC").then(function (response) {
                     theArray[index].data = response.data.data
                     /** if (somevarialble.toLowerCase() == response.data[0].itemValue.toLowerCase()) {
                         $this.filteredItems.push(item);

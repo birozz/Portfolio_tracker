@@ -30,11 +30,17 @@
                 <b-navbar-nav>
                     <b-nav-item href="#">Link</b-nav-item>
                     <b-nav-item href="#" disabled>Disabled</b-nav-item>
-                    <b-button size="sm" v-on:click="">Import</b-button>
+
                     <b-nav-item></b-nav-item>
                     <b-button size="sm" v-on:click="portfolio_export">Export</b-button>
+
                     <b-nav-item></b-nav-item>
-                    <b-form-file v-model="file2" class="mt-3" plain></b-form-file>
+                    <b-button size="sm" v-on:click="">Import</b-button>
+                    <b-nav-item></b-nav-item>
+
+                    <b-form-file v-on:change="importFile" v-model="portfolio_file" class="mt-3" plain></b-form-file>
+                    <div class="mt-3">Selected file: {{portfolio_file && portfolio_file.name}}</div>
+
                 </b-navbar-nav>
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
@@ -190,7 +196,17 @@
             </b-tabs>
         </b-container>
     </div>
+
+    <script>
+        // Check for the various File API support.
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            console.log("Great success! All the File APIs are supported.")
+        } else {
+            alert('The File APIs are not fully supported in this browser.');
+        }
+    </script>
     <script src="/static/js/app.js"></script>
+
 </body>
 
 </html>

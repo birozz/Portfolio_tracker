@@ -19,6 +19,7 @@ let COINMARKETCAP_API_URI = "https://api.coinmarketcap.com";
 let coins = []
 let currentTab = 0
 let UPDATE_INTERVAL = 60 * 1000;
+let file_content = ""
 
 function addCoinToPortfolio(id, symbol) {
     let tmp = []
@@ -51,6 +52,7 @@ let app = new Vue({
         sum_dolar: 0,
         name: '',
         second_tab: true,
+        portfolio_file: null,
         portfolio: [],
         coins_arr: [],
         coinData: {},
@@ -61,9 +63,29 @@ let app = new Vue({
 
     methods: {
 
+        importFile: function (e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            //this.createInput(files[0]);
+
+            var reader = new window.FileReader();
+            console.log("BABABABABABABABABABAB");
+            var vm = this
+
+            reader.onload = (e) => {
+                vm.fileinput = reader.result;
+                console.log(vm.fileinput)
+            }
+
+            reader.readAsText(files[0]);
+
+            //console.log(vm.fileinput);
+        },
+
         setAmount: function () {
-            this.sum_dolar=0
-            this.sum_sat=0
+            this.sum_dolar = 0
+            this.sum_sat = 0
             this.portfolio.forEach((coin, index, theArray) => {
                 if (!theArray[index].hidden) {
                     this.sum_dolar += theArray[index].data.quotes.USD.price * theArray[index].amount

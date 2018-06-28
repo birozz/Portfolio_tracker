@@ -70,11 +70,11 @@ let app = new Vue({
             //this.createInput(files[0]);
 
             var reader = new window.FileReader();
-            console.log("BABABABABABABABABABAB");
             var vm = this
 
             reader.onload = (e) => {
                 vm.fileinput = reader.result;
+                vm.portfolio = JSON.parse(vm.fileinput)
                 console.log(vm.fileinput)
             }
 

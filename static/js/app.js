@@ -53,6 +53,7 @@ let app = new Vue({
         name: '',
         second_tab: true,
         portfolio_file: null,
+        loaded_portfolio: [],
         portfolio: [],
         coins_arr: [],
         coinData: {},
@@ -74,12 +75,12 @@ let app = new Vue({
 
             reader.onload = (e) => {
                 vm.fileinput = reader.result;
-                vm.portfolio = JSON.parse(vm.fileinput)
-                console.log(vm.fileinput)
+                vm.loaded_portfolio = JSON.parse(vm.fileinput)
+                vm.portfolio = vm.portfolio.concat(vm.loaded_portfolio)
+                console.log(vm.loaded_portfolio)
             }
 
             reader.readAsText(files[0]);
-
             //console.log(vm.fileinput);
         },
 

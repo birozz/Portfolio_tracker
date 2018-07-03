@@ -157,7 +157,7 @@
                                     <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="setAmount">Save</b-button>
                                 </div>
                             </td>
-                            <td>{{ sum_sat }} </td>
+                            <td>{{ Number((sum_sat).toFixed(8)) }} </td>
                             <td>{{ sum_dolar | currency }}</td>
                             <td></td>
                             <td></td>
@@ -174,7 +174,7 @@
                                     </b-col>
                                 </td>
 
-                                <td>{{ coin.data.quotes.BTC.price * coin.amount }}</td>
+                                <td>{{ Number((coin.data.quotes.BTC.price * coin.amount).toFixed(8)) }}</td>
                                 <td>{{ coin.data.quotes.USD.price * coin.amount | currency }}</td>
                                 <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_1h)"> <span v-if="coin.data.quotes.USD.percent_change_1h > 0">+</span>{{ coin.data.quotes.USD.percent_change_1h }}% </td>
                                 <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_24h)"> <span v-if="coin.data.quotes.USD.percent_change_24h > 0">+</span>{{ coin.data.quotes.USD.percent_change_24h }}% </td>

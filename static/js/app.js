@@ -134,7 +134,7 @@ let app = new Vue({
         btabChange: function (tab_index) {
             if (tab_index == 0) {
                 this.getCoins()
-            } else if (tab_index == 1) {
+            } else {
                 this.totalrows = this.portfolio.length
             }
             currentTab = tab_index
@@ -145,7 +145,7 @@ let app = new Vue({
         paginationChange: function () {
             if (currentTab == 0) {
                 this.getCoins()
-            } else if (currentTab == 1) {
+            } else {
                 this.totalrows = this.portfolio.length
             }
         },
@@ -281,5 +281,7 @@ let app = new Vue({
  * their prices every 5 minutes, so checking every minute is sufficient.
  */
 setInterval(() => {
-    app.getCoins();
+    if(currentTab == 0){
+        app.getCoins();
+    }
 }, UPDATE_INTERVAL);

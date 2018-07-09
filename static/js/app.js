@@ -281,7 +281,11 @@ let app = new Vue({
  * their prices every 5 minutes, so checking every minute is sufficient.
  */
 setInterval(() => {
+
+    app.updatePortfolioCoins();
+    
     if(currentTab == 0){
         app.getCoins();
     }
+
 }, UPDATE_INTERVAL);

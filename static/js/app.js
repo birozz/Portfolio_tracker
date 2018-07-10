@@ -16,6 +16,7 @@ let CRYPTOCOMPARE_URI = "https://www.cryptocompare.com";
 let COINMARKETCAP_API_URI = "https://api.coinmarketcap.com";
 // The amount of milliseconds (ms) after which we should update our currency
 // charts.
+let coinsList
 let coins = []
 let currentTab = 0
 let UPDATE_INTERVAL = 60 * 1000;
@@ -161,40 +162,13 @@ let app = new Vue({
                     /** if (somevarialble.toLowerCase() == response.data[0].itemValue.toLowerCase()) {
                         $this.filteredItems.push(item);
                     }**/
-                    //console.log(JSON.stringify(theArray))
                 }).catch(function (error) {
                     console.log(error);
                 });
             })
 
-            /** for (var i = 0; i < this.portfolio.length;){
-                 //console.log(this.portfolio[i].id)
-
-                 axios.get(COINMARKETCAP_API_URI + "/v2/ticker/" + this.portfolio[i].id + "/?convert=").then((resp) => {          
-                     //this.portfolio[i].data = resp.data.data
-                     //console.log("+++++++++" + JSON.stringify(this.portfolio))
-                     
-                     ///TODO make !==
-                     if (this.portfolio.some(e => e.symbol === resp.data.data.symbol)) {
-                         
-                     } else {
-                         this.portfolioCoins.push(resp.data.data)
-                     } 
-                     //get coins data
-                     
-                     //this.coins[this.portfolio[0].symbol] = resp.data.data;
-                     // get the number of currencies
-
-                     //sort by rank with array functions :)
-                     ///this.coins_arr.sort((a, b) => a.rank - b.rank)
-                     /////console.log(JSON.stringify(this.coins))
-                 
-             }).catch((err) => {
-                 console.error(err);
-             });
-                 
-             }**/
-            ///////////////console.log(JSON.stringify(this.portfolio))
+            console.log("Updateeee")
+            //console.log(JSON.stringify(theArray))
         },
         /**
          * Load up all cryptocurrency data.  This data is used to find what logos
@@ -273,19 +247,34 @@ let app = new Vue({
         this.getCoinData();
     }
 });
-/**
- * Once the page has been loaded and all of our app stuff is working, we'll
- * start polling for new cryptocurrency data every minute.
- *
- * This is sufficiently dynamic because the API's we're relying on are updating
- * their prices every 5 minutes, so checking every minute is sufficient.
- */
-setInterval(() => {
 
-    app.updatePortfolioCoins();
+
+onload = function () {
     
-    if(currentTab == 0){
-        app.getCoins();
-    }
+        axios.get(COINMARKETCAP_API_URI + "/v2/listings/").then((resp) => {
+            //get coins data
+            coinsList = resp.data.data;
+            console.log("betotott")
+            console.log(coinsList)
 
-}, UPDATE_INTERVAL);
+        }).catch((err) => {
+            console.error(err);
+        });
+    },
+
+    /**
+     * Once the page has been loaded and all of our app stuff is working, we'll
+     * start polling for new cryptocurrency data every minute.
+     *
+     * This is sufficiently dynamic because the API's we're relying on are updating
+     * their prices every 5 minutes, so checking every minute is sufficient.
+     */
+    setInterval(() => {
+
+        app.updatePortfolioCoins();
+
+        if (currentTab == 0) {
+            app.getCoins();
+        }
+
+    }, UPDATE_INTERVAL);

@@ -65,6 +65,13 @@ let app = new Vue({
 
     methods: {
 
+        searchCoin: function (value){
+            console.log(value)
+            var result = coinsList.filter( current => current.symbol.includes(value.toUpperCase())
+                                          || current.name.toUpperCase().includes(value.toUpperCase()) )
+            console.log(result)
+        },
+
         importFile: function (e) {
             var files = e.target.files || e.dataTransfer.files;
             if (!files.length)

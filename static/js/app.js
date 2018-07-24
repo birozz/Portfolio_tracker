@@ -58,6 +58,7 @@ let app = new Vue({
         portfolio: [],
         searched_coin_arr: [],
         coins_arr: [],
+        coins_display_arr: [],
         coinData: {},
         currentPage: 1,
         totalrows: 1,
@@ -71,13 +72,19 @@ let app = new Vue({
             console.log(value)
             var result = coinsList.filter( current => current.symbol.includes(value.toUpperCase())
                                           || current.name.toUpperCase().includes(value.toUpperCase()) )
+            console.log(result)
             result.forEach((element, index, theArray) => {
                   this.searched_coin_arr.push(createCoinObj(element.id, element.symbol))
             })
 
+            this.coins_display_arr = this.portfolio.slice()
+            console.log(this.coins_display_arr)
+            this.coins_display_arr.pop()
+
+            //this.coins_display_arr.pop()
             //console.log(this.searched_coin_arr)
             //this.updateCoinsById(this.searched_coin_arr)
-            console.log(this.searched_coin_arr)
+            console.log(this.coins_display_arr)
         },
 
         importFile: function (e) {
@@ -221,7 +228,7 @@ let app = new Vue({
             });
         },
         /**
-         * Get the top 10 cryptocurrencies by value.  This data is refreshed each 5
+         * Get the cryptocurrencies by value.  This data is refreshed each 5
          * minutes by the backing API service.
          */
         getCoins: function () {
@@ -239,6 +246,7 @@ let app = new Vue({
                 }
                 //sort by rank with array functions :)
                 this.coins_arr.sort((a, b) => a.rank - b.rank)
+                this.coins_display_arr = this.coins_arr
                 //////////////////console.log(JSON.stringify(this.coins_arr))
 
             }).catch((err) => {

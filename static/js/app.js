@@ -19,10 +19,10 @@ let COINMARKETCAP_API_URI = "https://api.coinmarketcap.com";
 let coinsList
 let coins = []
 let currentTab = 0
-let UPDATE_INTERVAL = 60 * 1000;
+let UPDATE_INTERVAL = 60 * 10000;
 let file_content = ""
 
-function addCoinToPortfolio(id, symbol) {
+function createCoinObj(id, symbol) {
     let tmp = []
     tmp.push(id)
     tmp.push(symbol)
@@ -56,6 +56,7 @@ let app = new Vue({
         portfolio_file: null,
         loaded_portfolio: [],
         portfolio: [],
+        searched_coin_arr: [],
         coins_arr: [],
         coinData: {},
         currentPage: 1,
@@ -66,10 +67,17 @@ let app = new Vue({
     methods: {
 
         searchCoin: function (value){
+            this.searched_coin_arr = []
             console.log(value)
             var result = coinsList.filter( current => current.symbol.includes(value.toUpperCase())
                                           || current.name.toUpperCase().includes(value.toUpperCase()) )
-            console.log(result)
+            result.forEach((element, index, theArray) => {
+                  this.searched_coin_arr.push(createCoinObj(element.id, element.symbol))
+            })
+
+            //console.log(this.searched_coin_arr)
+            //this.updateCoinsById(this.searched_coin_arr)
+            console.log(this.searched_coin_arr)
         },
 
         importFile: function (e) {
@@ -115,8 +123,9 @@ let app = new Vue({
 
         addCoin: function (addEvent) {
             ////////////console.log(event.target.parentElement.parentElement.children[3].innerHTML)
-            this.portfolio.push(addCoinToPortfolio(addEvent.target.parentElement.parentElement.children[1].innerHTML, addEvent.target.parentElement.parentElement.children[4].innerHTML))
-            this.updatePortfolioCoins()
+            this.portfolio.push(createCoinObj(addEvent.target.parentElement.parentElement.children[1].innerHTML, addEvent.target.parentElement.parentElement.children[4].innerHTML))
+            //this.updatePortfolioCoins()
+            this.updateCoinsById()
             this.second_tab = false
             console.log(JSON.stringify(this.portfolio))
         },
@@ -177,6 +186,25 @@ let app = new Vue({
             console.log("Updateeee")
             //console.log(JSON.stringify(theArray))
         },
+
+        updateCoinsById: function (coinsArray = this.portfolio) {
+            let self = this
+            //this.totalrows = this.portfolio.length
+            coinsArray.forEach((coin, index, theArray) => {
+                axios.get(COINMARKETCAP_API_URI + "/v2/ticker/" + coin.id + "/?convert=BTC").then(function (response) {
+                    theArray[index].data = response.data.data
+                    /** if (somevarialble.toLowerCase() == response.data[0].itemValue.toLowerCase()) {
+                        $this.filteredItems.push(item);
+                    }**/
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            })
+
+            console.log("Updateeee")
+            //console.log(JSON.stringify(theArray))
+        },
+
         /**
          * Load up all cryptocurrency data.  This data is used to find what logos
          * each currency has, so we can display things in a friendly way.

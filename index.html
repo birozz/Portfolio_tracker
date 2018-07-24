@@ -43,7 +43,7 @@
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form>
-                        <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search" v-on:input="searchCoin" />
+                        <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search" v-on:change="searchCoin" />
                         <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
                     </b-nav-form>
                     <b-nav-item-dropdown text="Lang" right>
@@ -151,7 +151,7 @@
                         <thead id="summa">
                             <td>
                                 <div class="text-center">
-                                    <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="updatePortfolioCoins">Refresh</b-button>
+                                    <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="updateCoinsById">Refresh</b-button>
                                 </div>
                             </td>
                             <td>

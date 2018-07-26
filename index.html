@@ -44,8 +44,8 @@
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form>
                         <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search" v-on:input="searchCoin" />
-                        <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
                     </b-nav-form>
+                    <b-button size="sm" class="my-2 my-sm-0" v-on:click="pp">Search</b-button>
                     <b-nav-item-dropdown text="Lang" right>
                         <b-dropdown-item href="#">EN</b-dropdown-item>
                         <b-dropdown-item href="#">ES</b-dropdown-item>
@@ -65,6 +65,7 @@
         <b-container class="main-container">
             <b-pagination size="sm" :total-rows="totalrows" v-on:input="paginationChange" v-model="currentPage" :per-page="perpage"> </b-pagination>
             <b-tabs v-on:input="btabChange">
+
                 <b-tab title="all coins" active>
                     <table class="table table-hover">
                         <thead>
@@ -98,6 +99,7 @@
                         </tbody>
                     </table>
                 </b-tab>
+
                 <b-tab title="my coins" v-on:click="" :disabled="second_tab">
                     <table class="table table-hover">
                         <thead>
@@ -130,13 +132,8 @@
                     </table>
                 </b-tab>
 
-
-
-
                 <b-tab title="my coin value" :disabled="second_tab">
-
                     <table class="table table-hover">
-
                         <thead>
                             <td>Name</td>
                             <td>Amount</td>
@@ -185,15 +182,39 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!--
-<b-form-textarea placeholder="Enter something" :rows="1" :max-rows="1">
-                                    </b-form-textarea>
--->
-
-
                 </b-tab>
 
-
+                <b-tab id="search_tab" :title="search_tab_title" :disabled="search_tab_disabled">
+                    <table class="table table-hover">
+                        <thead>
+                            <td>Action</td>
+                            <td>Rank</td>
+                            <td>Name</td>
+                            <td>Symbol</td>
+                            <td>Price (USD)</td>
+                            <td>1H</td>
+                            <td>1D</td>
+                            <td>1W</td>
+                            <td>Market Cap (USD)</td>
+                        </thead>
+                        <tbody>
+                            <tr v-cloak v-for="coin in searched_coin_arr">
+                                <td>
+                                    <b-button size="sm" v-on:click="delCoin">Del</b-button>
+                                    <b-button size="sm" v-on:click="hideCoin">Hide</b-button>
+                                </td>
+                                <td>{{ coin.data.rank }}</td>
+                                <td><img v-bind:src="getCoinImage(coin.symbol)"> {{ coin.data.name }}</td>
+                                <td>{{ coin.symbol }}</td>
+                                <td>{{ coin.data.quotes.USD.price | currency }}</td>
+                                <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_1h)"> <span v-if="coin.data.quotes.USD.percent_change_1h > 0">+</span>{{ coin.data.quotes.USD.percent_change_1h }}% </td>
+                                <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_24h)"> <span v-if="coin.data.quotes.USD.percent_change_24h > 0">+</span>{{ coin.data.quotes.USD.percent_change_24h }}% </td>
+                                <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_7d)"> <span v-if="coin.data.quotes.USD.percent_change_7d > 0">+</span>{{ coin.data.quotes.USD.percent_change_7d }}% </td>
+                                <td>{{ coin.data.quotes.USD.market_cap | currency }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </b-tab>
 
             </b-tabs>
         </b-container>
@@ -206,6 +227,7 @@
         } else {
             alert('The File APIs are not fully supported in this browser.');
         }
+
     </script>
     <script src="/static/js/app.js"></script>
 

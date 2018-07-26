@@ -51,14 +51,18 @@ let app = new Vue({
     data: {
         sum_sat: 0,
         sum_dolar: 0,
-        name: '',
-        second_tab: true,
+
+        second_tab_disabled: true,
+        search_tab_title: '',
+        search_tab_disabled: true,
+
         portfolio_file: null,
         loaded_portfolio: [],
         portfolio: [],
         searched_coin_arr: [],
         coins_arr: [],
         coins_display_arr: [],
+
         coinData: {},
         currentPage: 1,
         totalrows: 1,
@@ -67,24 +71,36 @@ let app = new Vue({
 
     methods: {
 
-        searchCoin: function (value){
+        pp: function () {
+            console.log("inPP")
+            this.search_tab_title = "Search"
+            this.search_tab_disabled = false
+        },
+
+        searchCoin: function (value) {
+            console.log("Displayarray")
             this.searched_coin_arr = []
-            console.log(value)
-            var result = coinsList.filter( current => current.symbol.includes(value.toUpperCase())
-                                          || current.name.toUpperCase().includes(value.toUpperCase()) )
-            console.log(result)
-            result.forEach((element, index, theArray) => {
-                  this.searched_coin_arr.push(createCoinObj(element.id, element.symbol))
-            })
+            if (value.length > 0 ) {
+                this.search_tab_title = "Search"
+                this.search_tab_disabled = false
 
-            this.coins_display_arr = this.portfolio.slice()
-            console.log(this.coins_display_arr)
-            this.coins_display_arr.pop()
+                var result = coinsList.filter(current => current.symbol.includes(value.toUpperCase()) ||
+                    current.name.toUpperCase().includes(value.toUpperCase()))
 
-            //this.coins_display_arr.pop()
-            //console.log(this.searched_coin_arr)
-            //this.updateCoinsById(this.searched_coin_arr)
-            console.log(this.coins_display_arr)
+                result.some((element) => {
+                    if(this.searched_coin_arr.length > 50) {
+                        return true
+                    }
+                    this.searched_coin_arr.push(createCoinObj(element.id, element.symbol))
+                })
+
+
+            } else if(value === ''){
+                console.log("kulonut")
+                this.search_tab_title = ""
+                this.search_tab_disabled = true
+            }
+            console.log("============= searchCoin() =============")
         },
 
         importFile: function (e) {
@@ -133,7 +149,7 @@ let app = new Vue({
             this.portfolio.push(createCoinObj(addEvent.target.parentElement.parentElement.children[1].innerHTML, addEvent.target.parentElement.parentElement.children[4].innerHTML))
             //this.updatePortfolioCoins()
             this.updateCoinsById()
-            this.second_tab = false
+            this.second_tab_disabled = false
             console.log(JSON.stringify(this.portfolio))
         },
 
@@ -149,7 +165,7 @@ let app = new Vue({
             console.log(JSON.stringify(this.portfolio))
 
             if (this.portfolio.length == 0) {
-                this.second_tab = true
+                this.second_tab_disabled = true
             }
         },
         /**
@@ -174,26 +190,8 @@ let app = new Vue({
             }
         },
         /**
-         * Get the cryptocurrencies that are in the users portfolio. 
+         * Get the cryptocurrencies that are in the users portfolio by coin Id. 
          */
-        updatePortfolioCoins: function () {
-            let self = this
-            //this.totalrows = this.portfolio.length
-            this.portfolio.forEach((coin, index, theArray) => {
-                axios.get(COINMARKETCAP_API_URI + "/v2/ticker/" + coin.id + "/?convert=BTC").then(function (response) {
-                    theArray[index].data = response.data.data
-                    /** if (somevarialble.toLowerCase() == response.data[0].itemValue.toLowerCase()) {
-                        $this.filteredItems.push(item);
-                    }**/
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            })
-
-            console.log("Updateeee")
-            //console.log(JSON.stringify(theArray))
-        },
-
         updateCoinsById: function (coinsArray = this.portfolio) {
             let self = this
             //this.totalrows = this.portfolio.length
@@ -252,6 +250,7 @@ let app = new Vue({
             }).catch((err) => {
                 console.error(err);
             });
+            console.log("============= getCoins() =============")
         },
         /**
          * Given a cryptocurrency ticket symbol, return the currency's logo
@@ -293,7 +292,7 @@ let app = new Vue({
 
 
 onload = function () {
-    
+
         axios.get(COINMARKETCAP_API_URI + "/v2/listings/").then((resp) => {
             //get coins data
             coinsList = resp.data.data;
@@ -314,7 +313,7 @@ onload = function () {
      */
     setInterval(() => {
 
-        app.updatePortfolioCoins();
+        app.updateCoinsById();
 
         if (currentTab == 0) {
             app.getCoins();

@@ -22,15 +22,12 @@ let currentTab = 0
 let UPDATE_INTERVAL = 60 * 10000;
 let file_content = ""
 
-function createCoinObj(id, symbol) {
-    let tmp = []
-    tmp.push(id)
-    tmp.push(symbol)
+function createCoinObj(c_id, c_symbol, c_name="") {
 
-    //why it is first pushed to tmp and later shifted ?
     let coinObj = {
-        id: tmp.shift(),
-        symbol: tmp.shift(),
+        id: c_id,
+        symbol: c_symbol,
+        name: c_name,
         hidden: false,
         data: {
             quotes: {
@@ -91,7 +88,7 @@ let app = new Vue({
                     if(this.searched_coin_arr.length > 50) {
                         return true
                     }
-                    this.searched_coin_arr.push(createCoinObj(element.id, element.symbol))
+                    this.searched_coin_arr.push(createCoinObj(element.id, element.symbol, element.name))
                 })
 
 
@@ -123,7 +120,7 @@ let app = new Vue({
             //console.log(vm.fileinput);
         },
 
-        setAmount: function () {
+        saveAmount: function () {
             this.sum_dolar = 0
             this.sum_sat = 0
             this.portfolio.forEach((coin, index, theArray) => {
@@ -145,7 +142,7 @@ let app = new Vue({
         },
 
         addCoin: function (addEvent) {
-            ////////////console.log(event.target.parentElement.parentElement.children[3].innerHTML)
+            //console.log(addEvent)
             this.portfolio.push(createCoinObj(addEvent.target.parentElement.parentElement.children[1].innerHTML, addEvent.target.parentElement.parentElement.children[4].innerHTML))
             //this.updatePortfolioCoins()
             this.updateCoinsById()

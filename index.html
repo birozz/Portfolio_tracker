@@ -153,7 +153,7 @@
                             </td>
                             <td>
                                 <div class="text-center">
-                                    <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="setAmount">Save</b-button>
+                                    <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="saveAmount">Save</b-button>
                                 </div>
                             </td>
                             <td>{{ Number((sum_sat).toFixed(8)) }} </td>
@@ -169,7 +169,7 @@
                                 <td><img v-bind:src="getCoinImage(coin.symbol)"> {{ coin.data.name }}</td>
                                 <td>
                                     <b-col sm="9">
-                                        <b-form-input size="sm" v-on:input="setAmount" v-model="coin.amount" type="number" placeholder="amount"></b-form-input>
+                                        <b-form-input size="sm" v-on:input="saveAmount" v-model="coin.amount" type="number" placeholder="amount"></b-form-input>
                                     </b-col>
                                 </td>
 
@@ -188,7 +188,8 @@
                     <table class="table table-hover">
                         <thead>
                             <td>Action</td>
-                            <td>Rank</td>
+                            <td hidden>Id</td>
+                            <td hidden>Id</td>
                             <td>Name</td>
                             <td>Symbol</td>
                             <td>Price (USD)</td>
@@ -200,17 +201,12 @@
                         <tbody>
                             <tr v-cloak v-for="coin in searched_coin_arr">
                                 <td>
-                                    <b-button size="sm" v-on:click="delCoin">Del</b-button>
-                                    <b-button size="sm" v-on:click="hideCoin">Hide</b-button>
+                                    <b-button size="sm" v-on:click="addCoin">Add</b-button>
                                 </td>
-                                <td>{{ coin.data.rank }}</td>
-                                <td><img v-bind:src="getCoinImage(coin.symbol)"> {{ coin.data.name }}</td>
+                                <td hidden>{{ coin.id }}</td>
+                                <td hidden>{{ coin.id }}</td>
+                                <td><img v-bind:src="getCoinImage(coin.symbol)"> {{ coin.name }}</td>
                                 <td>{{ coin.symbol }}</td>
-                                <td>{{ coin.data.quotes.USD.price | currency }}</td>
-                                <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_1h)"> <span v-if="coin.data.quotes.USD.percent_change_1h > 0">+</span>{{ coin.data.quotes.USD.percent_change_1h }}% </td>
-                                <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_24h)"> <span v-if="coin.data.quotes.USD.percent_change_24h > 0">+</span>{{ coin.data.quotes.USD.percent_change_24h }}% </td>
-                                <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_7d)"> <span v-if="coin.data.quotes.USD.percent_change_7d > 0">+</span>{{ coin.data.quotes.USD.percent_change_7d }}% </td>
-                                <td>{{ coin.data.quotes.USD.market_cap | currency }}</td>
                             </tr>
                         </tbody>
                     </table>

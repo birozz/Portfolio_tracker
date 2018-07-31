@@ -234,7 +234,7 @@ let app = new Vue({
                 return CRYPTOCOMPARE_URI + this.coinData[symbol].ImageUrl;
             } else {
                 //return CRYPTOCOMPARE_URI + "/media/19633/btc.png"
-                return "../images/no_image.png"
+                return "/images/no_image.png"
             }
         },
         /**

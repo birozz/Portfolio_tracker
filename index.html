@@ -21,7 +21,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <!-- ****** faviconit.com favicons ****** -->
 	<link rel="shortcut icon" href="/images/favicon.ico">
-	<link rel="icon" sizes="16x16 32x32 64x64" href="/favicon.ico">
+	<link rel="icon" sizes="16x16 32x32 64x64" href="/images/favicon.ico">
 	<link rel="icon" type="images/image/png" sizes="196x196" href="/images/favicon-192.png">
 	<link rel="icon" type="image/png" sizes="160x160" href="/images/favicon-160.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96.png">
@@ -82,6 +82,8 @@
         <b-container class="main-container">
             <b-pagination size="sm" :total-rows="totalrows" v-on:input="paginationChange" v-model="currentPage" :per-page="perpage"> </b-pagination>
             <b-tabs v-on:input="btabChange">
+
+                <template v-if="search_tab_disabled == true">
                 <b-tab title="all coins" active>
                     <table class="table table-hover">
                         <thead>
@@ -115,6 +117,40 @@
                         </tbody>
                     </table>
                 </b-tab>
+                </template>
+
+                <template v-else>
+
+                    <b-tab id="search_tab" title="search">
+                    <table class="table table-hover">
+                        <thead>
+                            <td>Action</td>
+                            <td hidden>Id</td>
+                            <td hidden>Id</td>
+                            <td>Name</td>
+                            <td>Symbol</td>
+                            <td>Price (USD)</td>
+                            <td>1H</td>
+                            <td>1D</td>
+                            <td>1W</td>
+                            <td>Market Cap (USD)</td>
+                        </thead>
+                        <tbody>
+                            <tr v-cloak v-for="coin in searched_coin_arr">
+                                <td>
+                                    <b-button size="sm" v-on:click="addCoin">Add</b-button>
+                                </td>
+                                <td hidden>{{ coin.id }}</td>
+                                <td hidden>{{ coin.id }}</td>
+                                <td><img v-bind:src="getCoinImage(coin.symbol)"> {{ coin.name }}</td>
+                                <td>{{ coin.symbol }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </b-tab>
+
+                </template>
+
                 <b-tab title="my coins" v-on:click="" :disabled="second_tab_disabled">
                     <table class="table table-hover">
                         <thead>
@@ -195,33 +231,8 @@
                         </tbody>
                     </table>
                 </b-tab>
-                <b-tab id="search_tab" :title="search_tab_title" :disabled="search_tab_disabled">
-                    <table class="table table-hover">
-                        <thead>
-                            <td>Action</td>
-                            <td hidden>Id</td>
-                            <td hidden>Id</td>
-                            <td>Name</td>
-                            <td>Symbol</td>
-                            <td>Price (USD)</td>
-                            <td>1H</td>
-                            <td>1D</td>
-                            <td>1W</td>
-                            <td>Market Cap (USD)</td>
-                        </thead>
-                        <tbody>
-                            <tr v-cloak v-for="coin in searched_coin_arr">
-                                <td>
-                                    <b-button size="sm" v-on:click="addCoin">Add</b-button>
-                                </td>
-                                <td hidden>{{ coin.id }}</td>
-                                <td hidden>{{ coin.id }}</td>
-                                <td><img v-bind:src="getCoinImage(coin.symbol)"> {{ coin.name }}</td>
-                                <td>{{ coin.symbol }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </b-tab>
+
+
             </b-tabs>
         </b-container>
     </div>

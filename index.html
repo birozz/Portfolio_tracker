@@ -9,12 +9,12 @@
     <!-- Required Stylesheets -->
     <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <!-- Required scripts -->
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
-    <script src="/static/js/vue2-filters.min.js"></script>
+    <script src="/js/vue2-filters.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -30,22 +30,18 @@
                 <b-navbar-nav>
                     <b-nav-item href="#">Link</b-nav-item>
                     <b-nav-item href="#" disabled>Disabled</b-nav-item>
-
                     <b-nav-item></b-nav-item>
                     <b-button size="sm" v-on:click="portfolio_export">Export</b-button>
-
                     <b-nav-item></b-nav-item>
                     <b-button size="sm" v-on:click="">Import</b-button>
                     <b-nav-item></b-nav-item>
-
                     <b-form-file v-on:change="importFile" v-model="portfolio_file" class="mt-3" plain></b-form-file>
                 </b-navbar-nav>
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form>
-                        <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search" v-on:input="searchCoin" />
-                    </b-nav-form>
-                    <b-button size="sm" class="my-2 my-sm-0" v-on:click="pp">Search</b-button>
+                        <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search" v-on:input="searchCoin" /> </b-nav-form>
+                    <b-button size="sm" class="my-2 my-sm-0">Search</b-button>
                     <b-nav-item-dropdown text="Lang" right>
                         <b-dropdown-item href="#">EN</b-dropdown-item>
                         <b-dropdown-item href="#">ES</b-dropdown-item>
@@ -61,11 +57,9 @@
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
-
         <b-container class="main-container">
             <b-pagination size="sm" :total-rows="totalrows" v-on:input="paginationChange" v-model="currentPage" :per-page="perpage"> </b-pagination>
             <b-tabs v-on:input="btabChange">
-
                 <b-tab title="all coins" active>
                     <table class="table table-hover">
                         <thead>
@@ -99,7 +93,6 @@
                         </tbody>
                     </table>
                 </b-tab>
-
                 <b-tab title="my coins" v-on:click="" :disabled="second_tab_disabled">
                     <table class="table table-hover">
                         <thead>
@@ -114,7 +107,7 @@
                             <td>Market Cap (USD)</td>
                         </thead>
                         <tbody>
-                            <tr v-cloak v-for="coin in portfolio">
+                            <tr v-cloak v-for="coin in portfolio" v-if="coin.hidden == false">
                                 <td>
                                     <b-button size="sm" v-on:click="delCoin">Del</b-button>
                                     <b-button size="sm" v-on:click="hideCoin">Hide</b-button>
@@ -131,7 +124,6 @@
                         </tbody>
                     </table>
                 </b-tab>
-
                 <b-tab title="my coin value" :disabled="second_tab_disabled">
                     <table class="table table-hover">
                         <thead>
@@ -144,16 +136,16 @@
                             <td>1W</td>
                             <td>Market Cap (USD)</td>
                         </thead>
-
                         <thead id="summa">
                             <td>
                                 <div class="text-center">
-                                    <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="updateCoinsById">Refresh</b-button>
+                                    <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="updateCoinsById">Refresh coins</b-button>
+                                    <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="unHideCoin">Unhide coins</b-button>
                                 </div>
                             </td>
                             <td>
                                 <div class="text-center">
-                                    <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="saveAmount">Save</b-button>
+                                    <b-button id="singlebutton" name="singlebutton" class="btn btn-default" size="sm" v-on:click="saveAmount">Save amount</b-button>
                                 </div>
                             </td>
                             <td>{{ Number((sum_sat).toFixed(8)) }} </td>
@@ -164,15 +156,13 @@
                             <td></td>
                         </thead>
                         <tbody>
-                            <tr v-cloak v-for="coin in portfolio">
-
+                            <tr v-cloak v-for="coin in portfolio" v-if="coin.hidden == false">
                                 <td><img v-bind:src="getCoinImage(coin.symbol)"> {{ coin.data.name }}</td>
                                 <td>
                                     <b-col sm="9">
                                         <b-form-input size="sm" v-on:input="saveAmount" v-model="coin.amount" type="number" placeholder="amount"></b-form-input>
                                     </b-col>
                                 </td>
-
                                 <td>{{ Number((coin.data.quotes.BTC.price * coin.amount).toFixed(8)) }}</td>
                                 <td>{{ coin.data.quotes.USD.price * coin.amount | currency }}</td>
                                 <td v-bind:style="getColor(coin.data.quotes.USD.percent_change_1h)"> <span v-if="coin.data.quotes.USD.percent_change_1h > 0">+</span>{{ coin.data.quotes.USD.percent_change_1h }}% </td>
@@ -183,7 +173,6 @@
                         </tbody>
                     </table>
                 </b-tab>
-
                 <b-tab id="search_tab" :title="search_tab_title" :disabled="search_tab_disabled">
                     <table class="table table-hover">
                         <thead>
@@ -211,22 +200,19 @@
                         </tbody>
                     </table>
                 </b-tab>
-
             </b-tabs>
         </b-container>
     </div>
-
     <script>
         // Check for the various File API support.
         if (window.File && window.FileReader && window.FileList && window.Blob) {
             console.log("Great success! All the File APIs are supported.")
-        } else {
+        }
+        else {
             alert('The File APIs are not fully supported in this browser.');
         }
-
     </script>
-    <script src="/static/js/app.js"></script>
-
+    <script src="/js/app.js"></script>
 </body>
 
 </html>

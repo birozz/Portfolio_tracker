@@ -1,0 +1,32 @@
+[v-cloak] {
+  display: none;
+}
+
+h1 {
+  text-align: center;
+}
+
+td img {
+  width: 25px;
+}
+
+.table > thead tr, .table > thead td, .table > thead th {border: 0!important;}
+
+#summa {
+font-weight: 700;
+   background:red; 
+}
+
+
+.jumbotron p {
+  font-size: 1.2em;
+}
+
+.jumbotron {
+  margin-top: 5em;
+  margin-bottom: 5em;
+}
+
+
+
+

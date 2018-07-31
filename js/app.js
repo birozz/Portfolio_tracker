@@ -242,7 +242,7 @@ let app = new Vue({
             }
             else {
                 //return CRYPTOCOMPARE_URI + "/media/19633/btc.png"
-                return "../static/images/no_image.png"
+                return "../images/no_image.png"
             }
         }
         , /**
